@@ -38,11 +38,18 @@ class Maze {
       Cell choosen;
       
       current = grid[0][0];
-      current.visited = true;
+      boolean[][] visitedCells = new boolean[rows][cols];
+      for (int i = 0; i< rows; i++) {
+        for (int j = 0; j< cols; j++) {
+          visitedCells[i][j] = false;
+        }
+      }
+     
+      visitedCells[current.x][current.y] = true;
       
       while(!isGenerated) {
-        if (checkAllCell()) {
-          choosen = getRandomNeighbourg(current.x, current.y);
+        if (checkAllCell(visitedCells)) {
+          choosen = getRandomNeighbourg(current.x, current.y, visitedCells);
           if (choosen != null) {//if the current cells have neighbourg that have not been visited
             stack.add(choosen);
             //remove the wall between the two cells
@@ -61,35 +68,30 @@ class Maze {
               current.walls[BOTTOM]=false;
             }
     
-            choosen.visited = true;
+            visitedCells[choosen.x][choosen.y] = true;
             current = choosen;
           } else if (stack.size()>0) {
             current = stack.get(stack.size()-1);
             stack.remove(stack.size()-1);
           }
         } else {
-          for (int i = 0; i< rows; i++) {
-            for (int j = 0; j< cols; j++) {
-              grid[i][j].visited = false;
-            }
-          }
           println("Finished generation");
           isGenerated = true;
         }
       }
     }
     
-    boolean checkAllCell() {
+    boolean checkAllCell(boolean[][] visitedCells) {
       for (int i = 0; i< rows; i++) {
         for (int j = 0; j< cols; j++) {
-          if (!grid[i][j].visited)
+          if (!visitedCells[i][j])
             return true;
           }
         }
       return false;
     }
     
-    Cell getRandomNeighbourg(int x, int y) {
+    Cell getRandomNeighbourg(int x, int y, boolean[][] visitedCells) {
       Cell[] neighbourg = new Cell[4];
   
       try {
@@ -122,7 +124,7 @@ class Maze {
   
       for (Cell tmp : neighbourg)
       {
-        if (tmp != null && !tmp.visited) {
+        if (tmp != null && !visitedCells[tmp.x][tmp.y]) {
           ret.add(tmp);
           found = true;
         }
