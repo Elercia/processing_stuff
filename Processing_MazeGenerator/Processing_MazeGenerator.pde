@@ -18,5 +18,9 @@ void setup() {
 void draw() {
   
   background(255);
-  maze.showGrid();  
+  maze.resetColor();
+  maze.showGrid();
+  
+  random_solve(maze);
+  delay(1000);
 }
