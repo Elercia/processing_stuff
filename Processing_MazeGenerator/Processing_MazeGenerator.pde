@@ -4,23 +4,32 @@
  */
 
 Maze maze;
+final CellColor pathCellColor = new CellColor(0, 255, 255, 100);
+final CellColor visitedCellColor = new CellColor(255, 0, 255, 100);
 float cell_size = 10;
+int iteration = 0;
 
 void setup() {
   size (1300, 1000);
-  
+
   maze = new Maze();
   
-  maze.generate();
-  save("maze.jpg");
+  print("Maze genrated : " + maze.rows + "x" + maze.cols + "(" + (maze.rows * maze.cols) + " cells)");
 }
 
 void draw() {
   
   background(255);
-  maze.resetColor();
-  maze.showGrid();
+  maze.generate_BackTraker();
   
-  random_solve(maze);
-  delay(1000);
+  //solve_random(maze);
+  
+  solve_recursive(maze);
+  maze.showGrid();  //<>//
+
+  save("maze"+ (iteration++) +".jpg");
+  
+  if(iteration >= 1) {
+     noLoop(); 
+  }
 }

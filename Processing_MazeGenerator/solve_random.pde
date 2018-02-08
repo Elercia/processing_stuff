@@ -1,5 +1,5 @@
 
-void random_solve(Maze maze) {
+void solve_random(Maze maze) {
   
   ArrayList<Cell> path =  new ArrayList<Cell>();
   
@@ -29,16 +29,18 @@ void random_solve(Maze maze) {
       current = path.get(path.size()-1);
       path.remove(path.size()-1);
     } else {
+      current.cellColor = visitedCellColor; 
       path.add(current);
       visitedCells[current.x][current.y] = true;
     }
   }
   
-  print("Random solve done\n"); //<>//
+  println("Random solve done");
+  println("size:"+path.size());
+  
   
   for(Cell cell : path) {
-     cell.cellColor = new CellColor(0, 255, 255, 100); 
-     cell.show();
+     cell.cellColor = pathCellColor; 
   }
 }
 
@@ -52,41 +54,32 @@ Cell getRandomCell(int x, int y, Maze maze, boolean[][] visitedCells) {
   
   Cell current = maze.grid[x][y];
   
-  try {
-    if(!current.walls[TOP]) {
-      neighbourg[TOP] = maze.grid[x][y-1];
-    }
-  }
-  catch(Exception e) {
+  if(y > 0 && !current.walls[TOP]) { //<>// //<>//
+    neighbourg[TOP] = maze.grid[x][y-1];
+  } else {
     neighbourg[TOP] = null;
   }
-  try {
-    if(!current.walls[RIGHT]) {
-      neighbourg[RIGHT] = maze.grid[x+1][y];
-    }
-  }
-  catch(Exception e) {
+  
+  if(x < maze.rows && !current.walls[RIGHT]) {
+    neighbourg[RIGHT] = maze.grid[x+1][y];
+  } else {
     neighbourg[RIGHT] = null;
   }
-  try {
-    if(!current.walls[LEFT]) {
-      neighbourg[LEFT] = maze.grid[x-1][y];
-    }
-  }
-  catch(Exception e) {
+    
+  if(x > 0 && !current.walls[LEFT]) {
+    neighbourg[LEFT] = maze.grid[x-1][y];
+  } else {
     neighbourg[LEFT] = null;
   }
-  try {
-    if(!current.walls[BOTTOM]) {
-      neighbourg[BOTTOM] = maze.grid[x][y+1];
-    }
-  }
-  catch(Exception e) {
+  
+  if(y < maze.rows && !current.walls[BOTTOM]) {
+    neighbourg[BOTTOM] = maze.grid[x][y+1];
+  } else {
     neighbourg[BOTTOM] = null;
   }
 
   boolean found = false;
-  ArrayList<Cell> ret = new ArrayList<Cell>();
+  ArrayList<Cell> ret = new ArrayList<Cell>(); //<>// //<>//
 
   for (Cell tmp : neighbourg)
   {
@@ -99,6 +92,7 @@ Cell getRandomCell(int x, int y, Maze maze, boolean[][] visitedCells) {
   if (!found) {
     return null;
   } else {
-    return ret.get(floor(random(0, ret.size())));
+    int randIndex = floor(random(0, ret.size()));
+    return ret.get(randIndex);
   }
 }

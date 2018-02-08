@@ -7,19 +7,28 @@ class Maze {
     
     Maze() {
       
-      isGenerated = false;
       cols = floor(height / cell_size);
       rows = floor(width / cell_size);
+      
       grid = new Cell[rows][cols];
       
+      reset();
+    }
+    
+    void reset() {
       for (int i = 0; i< rows; i++) {
         for (int j = 0; j< cols; j++) {
           grid[i][j] = new Cell(i, j);
         }
       }
+      
+      isGenerated = false;
     }
     
     void showGrid() {
+      
+      grid[0][0].cellColor = new CellColor(255, 0, 0, 255);
+      grid[rows - 1][cols - 1].cellColor = new CellColor(0, 255, 0, 255);
     
         for (int i = 0; i< rows; i++) {
           for (int j = 0; j< cols; j++) {
@@ -37,9 +46,11 @@ class Maze {
         }
     }
     
-    void generate() {
+    void generate_BackTraker() {
       
       println("Begin generation");
+      
+      reset();
       
       ArrayList<Cell> stack = new ArrayList<Cell>();
       
@@ -131,8 +142,7 @@ class Maze {
       boolean found = false;
       ArrayList<Cell> ret = new ArrayList<Cell>();
   
-      for (Cell tmp : neighbourg)
-      {
+      for (Cell tmp : neighbourg) {
         if (tmp != null && !visitedCells[tmp.x][tmp.y]) {
           ret.add(tmp);
           found = true;

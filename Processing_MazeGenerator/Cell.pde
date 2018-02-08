@@ -6,7 +6,7 @@ class CellColor {
        this.r = r;
        this.v = v;
        this.b = b;
-       this.alpha = 0;
+       this.alpha = 255;
    }
    
    CellColor(int r, int v, int b, int alpha) {
