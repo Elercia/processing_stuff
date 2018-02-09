@@ -61,3 +61,7 @@ class Cell {
     }
   }
 }
+
+interface Solver {
+   void solve(Maze maze); 
+}
