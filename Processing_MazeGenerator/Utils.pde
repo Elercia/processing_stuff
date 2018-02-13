@@ -1,67 +1,71 @@
 
 class CellColor {
-   int r, v, b, alpha;
-   
-   CellColor(int r, int v, int b) {
-       this.r = r;
-       this.v = v;
-       this.b = b;
-       this.alpha = 255;
-   }
-   
-   CellColor(int r, int v, int b, int alpha) {
-       this(r, v, b);
-       this.alpha = alpha;
-   }
+    int r, v, b, alpha;
+    
+    CellColor(int r, int v, int b) {
+        this.r = r;
+        this.v = v;
+        this.b = b;
+        this.alpha = 255;
+    }
+    
+    CellColor(int r, int v, int b, int alpha) {
+        this(r, v, b);
+        this.alpha = alpha;
+    }
 }
 
 int TOP =0, 
-  BOTTOM=1, 
-  LEFT=2, 
-  RIGHT=3;
+BOTTOM=1, 
+LEFT=2, 
+RIGHT=3;
 
 class Cell {
-  int x;
-  int y;
-
-  CellColor cellColor;
-  boolean[] walls = new boolean[4];
-
-
-  Cell( int x, int y) {
-    this.x = x;
-    this.y = y;
-
-    walls[TOP] = true;
-    walls[BOTTOM] = true;
-    walls[LEFT] = true;
-    walls[RIGHT] = true;
+    public int i;
+    public int j;
     
-    cellColor = null;
-  }
+    public CellColor cellColor;
+    public boolean[] walls = new boolean[4];
 
-  void show() {
-    float i = x * cell_size;
-    float j = y * cell_size;
 
-    stroke(0);
-    if (walls[TOP])
-      line(i, j, i+cell_size, j);
-    if (walls[BOTTOM])
-      line(i, j+cell_size, i+cell_size, j+cell_size);
-    if (walls[LEFT])
-      line(i, j, i, j+cell_size);
-    if (walls[RIGHT])
-      line(i+cell_size, j, i+cell_size, j+cell_size);
-
-    if (cellColor != null) {
-      noStroke();
-      fill(cellColor.r, cellColor.v, cellColor.b, cellColor.alpha);
-      rect(i, j, cell_size, cell_size);
+    Cell( int i, int j) {
+        this.i = i;
+        this.j = j;
+        
+        walls[TOP] = true;
+        walls[BOTTOM] = true;
+        walls[LEFT] = true;
+        walls[RIGHT] = true;
+        
+        cellColor = null;
     }
-  }
+
+    void show() {
+        float x = j * cell_size;
+        float y = i * cell_size;
+        
+        stroke(0);
+        if (walls[TOP])
+            line(x, y, x+cell_size, y);
+        if (walls[BOTTOM])
+            line(x, y+cell_size, x+cell_size, y+cell_size);
+        if (walls[LEFT])
+            line(x, y, x, y+cell_size);
+        if (walls[RIGHT])
+            line(x+cell_size, y, x+cell_size, y+cell_size);
+         
+        textSize(cell_size/2);
+        fill(0, 0, 0);
+        //text(i+""+j, x, y);   
+        
+        if (cellColor != null) {
+            noStroke();
+            fill(cellColor.r, cellColor.v, cellColor.b, cellColor.alpha);
+            rect(x, y, cell_size, cell_size);
+        }
+    }
 }
 
 interface Solver {
-   void solve(Maze maze); 
+    void solve(Maze maze); 
 }
