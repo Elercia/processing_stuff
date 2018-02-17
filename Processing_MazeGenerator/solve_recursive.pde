@@ -2,21 +2,20 @@
 
 class RecursiveSolver implements Solver {
 
-    private boolean[][] visitedCells = new boolean[maze.rows][maze.cols];
+    private boolean[][] visitedCells;
     
-    public RecursiveSolver() {
+    public void solve(Maze maze) {
+        
+        visitedCells = new boolean[maze.rows][maze.cols];
         for (int i = 0; i< maze.rows; i++) {
             for (int j = 0; j< maze.cols; j++) {
                 visitedCells[i][j] = false;
             }
         } 
-    }
-    
-    public void solve(Maze maze) {
     
         ArrayList<Cell> path = new ArrayList<Cell>();
         
-        path = recursive(0, 0, path, maze.rows - 1, maze.cols - 1);
+        path = recursive(maze, 0, 0, path, maze.rows - 1, maze.cols - 1);
         
         if(path != null) {
             println("solve_recursive done");
@@ -38,7 +37,7 @@ class RecursiveSolver implements Solver {
         }
     } // solve 
     
-    private ArrayList<Cell> recursive(int x, int y, ArrayList<Cell> path, int xDest, int yDest) {
+    private ArrayList<Cell> recursive(Maze maze, int x, int y, ArrayList<Cell> path, int xDest, int yDest) {
     
         Cell current = maze.grid[x][y];
         ArrayList<Cell> pathTmp = null;
@@ -56,7 +55,7 @@ class RecursiveSolver implements Solver {
         
         // Check BOTTOM
         if(x < maze.rows - 1 && !current.walls[BOTTOM] && !visitedCells[x + 1][y]) {
-            pathTmp = recursive(x + 1, y, path, xDest, yDest);
+            pathTmp = recursive(maze, x + 1, y, path, xDest, yDest);
             if(containLastCell(xDest, yDest, pathTmp)) {
                 return pathTmp; 
             }
@@ -64,7 +63,7 @@ class RecursiveSolver implements Solver {
         
         // Check TOP
         if(x > 0 && !current.walls[TOP] && !visitedCells[x - 1][y]) {
-            pathTmp = recursive(x - 1, y, path, xDest, yDest);
+            pathTmp = recursive(maze, x - 1, y, path, xDest, yDest);
             
             if(containLastCell(xDest, yDest, pathTmp)) {
                 return pathTmp; 
@@ -73,7 +72,7 @@ class RecursiveSolver implements Solver {
         
         // Check RIGHT
         if(y < maze.cols - 1 && !current.walls[RIGHT] && !visitedCells[x][y + 1]) {
-            pathTmp = recursive(x, y + 1, path, xDest, yDest);
+            pathTmp = recursive(maze, x, y + 1, path, xDest, yDest);
             if(containLastCell(xDest, yDest, pathTmp)) {
                 return pathTmp; 
             }
@@ -81,7 +80,7 @@ class RecursiveSolver implements Solver {
         
         // Check LEFT
         if(y > 0  && !current.walls[LEFT] && !visitedCells[x][y - 1]) {
-            pathTmp = recursive(x, y - 1, path, xDest, yDest);
+            pathTmp = recursive(maze, x, y - 1, path, xDest, yDest);
             if(containLastCell(xDest, yDest, pathTmp)) {
                 return pathTmp; 
             }

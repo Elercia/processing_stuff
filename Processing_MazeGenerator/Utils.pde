@@ -69,3 +69,7 @@ class Cell {
 interface Solver {
     void solve(Maze maze); 
 }
+
+interface Generator {
+     void generate(Maze maze);   
+}
